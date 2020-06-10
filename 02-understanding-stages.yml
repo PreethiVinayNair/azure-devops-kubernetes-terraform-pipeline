@@ -13,6 +13,17 @@ stages:
     - bash: echo $(PipelineLevelVariable)
     - bash: echo $(Build.BuildNumber)
     - bash: echo $(Build.SourceBranchName)
+    - bash: java -version
+    - bash: node --version
+    - bash: ls -R $(Build.ArtifactStagingDirectory)
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: |
+          **/*.yaml
+          **/*.tf
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 - stage: DevDeploy
   variables:
    environment: Dev
